@@ -1,3 +1,3 @@
 # leetcode
 Leetcode Questions
-C++ based
+Java based
