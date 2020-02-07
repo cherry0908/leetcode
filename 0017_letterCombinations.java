@@ -1,35 +1,23 @@
 import java.util.*;
+import java.util.Arrays;
 
 public class Main
 {
-	Map<String, String> digitMap = new HashMap<String, String>();
-    List<String> resultList = new ArrayList<String>();
-
-	public void helper(String digits, int position, String result){
-	    if(position == digits.length()){
-	        resultList.add(result);
+	public void backtrack(String digits, int start, String current, List<String> result, Map<String, String> digitMap){
+	    if(start == digits.length()){
+	        result.add(current);
+	        return;
 	    }
-	    else{
-	        String digitString = digitMap.get(digits.substring(position, position+1));
-	        for(int i=0;i<digitString.length();i++){
-	            helper(digits, position+1, result + digitString.substring(i, i+1));
-	        }
+
+	    String digitString = digitMap.get(digits.substring(start, start + 1));
+
+	    for(int i = 0; i < digitString.length(); i++){
+	        backtrack(digits, start + 1, current+digitString.substring(i, i + 1), result, digitMap);
 	    }
 	}
 	
-	public void helper2(String restOfDigits, String result){
-	    if(restOfDigits.length() == 0){
-	        resultList.add(result);
-	    }
-	    else{
-	        String digitString = digitMap.get(restOfDigits.substring(0,1));
-	        for(int i=0;i<digitString.length();i++){
-	            helper2(restOfDigits.substring(1), result+digitString.substring(i, i+1));
-	        }
-	    }
-	}
-  
-    public List<String> letterCombinations(String digits) {
+	public List<String> letterCombinations(String digits) {
+	    Map<String, String> digitMap = new HashMap<String, String>();
         digitMap.put("2", "abc");
         digitMap.put("3", "def");
         digitMap.put("4", "ghi");
@@ -38,12 +26,16 @@ public class Main
         digitMap.put("7", "pqrs");
         digitMap.put("8", "tuv");
         digitMap.put("9", "wxyz");
-		String result = "";
-		if(digits.length() != 0){
-	        helper2(digits, result);
-	        //helper(digits, 0, result);
-	    }
-		return resultList;
+
+		String current = "";
+		List<String> result = new ArrayList<String>();
+
+		if(digits == null || digits.length() == 0){
+		    return result;
+		} 
+		
+	    backtrack(digits, 0, current, result, digitMap);
+		return result;
     }
     
 	public static void main(String[] args) {
