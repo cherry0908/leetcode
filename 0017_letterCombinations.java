@@ -12,7 +12,7 @@ public class Main
 	    String digitString = digitMap.get(digits.substring(start, start + 1));
 
 	    for(int i = 0; i < digitString.length(); i++){
-	        backtrack(digits, start + 1, current+digitString.substring(i, i + 1), result, digitMap);
+	        backtrack(digits, start + 1, current + digitString.substring(i, i + 1), result, digitMap);
 	    }
 	}
 	
