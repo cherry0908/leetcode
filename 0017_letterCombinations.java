@@ -6,15 +6,14 @@ public class Main
     List<String> resultList = new ArrayList<String>();
 
 	public void helper(String digits, int position, String result){
-	    String digitString = digitMap.get(digits.substring(position, position+1));
-	    for(int i=0;i<digitString.length();i++){
-	        String addLetter = result + digitString.substring(i, i+1);
-	        if(position == digits.length()-1){
-	            resultList.add(addLetter);
+	    if(position == digits.length()){
+	        resultList.add(result);
+	    }
+	    else{
+	        String digitString = digitMap.get(digits.substring(position, position+1));
+	        for(int i=0;i<digitString.length();i++){
+	            helper(digits, position+1, result + digitString.substring(i, i+1));
 	        }
-    	    else{
-    	        helper(digits, position+1, addLetter);
-    	    }
 	    }
 	}
 	
@@ -23,11 +22,9 @@ public class Main
 	        resultList.add(result);
 	    }
 	    else{
-	        String digit = restOfDigits;
-	        String digitString = digitMap.get(digit);
+	        String digitString = digitMap.get(restOfDigits.substring(0,1));
 	        for(int i=0;i<digitString.length();i++){
-	            String letter = digitString.substring(i, i+1);
-	            helper2(restOfDigits.substring(1), result+letter);
+	            helper2(restOfDigits.substring(1), result+digitString.substring(i, i+1));
 	        }
 	    }
 	}
@@ -43,7 +40,8 @@ public class Main
         digitMap.put("9", "wxyz");
 		String result = "";
 		if(digits.length() != 0){
-	        helper(digits, 0, result);
+	        helper2(digits, result);
+	        //helper(digits, 0, result);
 	    }
 		return resultList;
     }
