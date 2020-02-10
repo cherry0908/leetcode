@@ -13,17 +13,11 @@ public class Main
 		
 		char letter = s.charAt(i);
 		if(Character.isDigit(letter)){
-			current = current + letter;
-			backtrack(s, i+1, current, result);
-			current = current.substring(0, current.length()-1);
+			backtrack(s, i+1, current + letter, result);
 		}
 		else{
-			current = current + Character.toLowerCase(letter);
-			backtrack(s, i+1, current, result);
-			current = current.substring(0, current.length()-1);
-			current = current + Character.toUpperCase(letter);
-			backtrack(s, i+1, current, result);
-			current = current.substring(0, current.length()-1);
+			backtrack(s, i+1, current + Character.toLowerCase(letter), result);
+			backtrack(s, i+1, current + Character.toUpperCase(letter), result);
 		}
 	}
 
