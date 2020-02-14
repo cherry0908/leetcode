@@ -32,6 +32,39 @@ public class Main
 		}
 	}
 
+
+	public boolean isValidIP(String str){
+		if(str.length() > 3) return false;
+		if(str.length() > 1 && str.substring(0,1).equals("0")) return false;
+		int num = Integer.parseInt(str);
+		if(num < 0 || num > 255) return false;
+		return true;
+	}
+	
+    public void backtrack1(String s, int start, List<String> current, List<String> result){
+		if(current.size() == 4 && start == s.length()){
+			StringBuilder tmp = new StringBuilder();
+			for(int i = 0;i<current.size();i++){
+				tmp.append(current.get(i));
+				tmp.append('.');
+			}
+			tmp.deleteCharAt(tmp.length()-1);
+			result.add(tmp.toString());
+			return;
+		}
+		
+		for(int i=1;i<4;i++){
+			if(start+i<=s.length()){
+			    String num = s.substring(start,start+i);
+				if(isValidIP(num)){
+					current.add(num);
+				    backtrack(s, start+i, current, result);
+				    current.remove(current.size()-1);
+				}
+			}
+		}
+	}
+
 	public List<String> restoreIpAddresses(String s) {
         List<String> result = new ArrayList<String>();
 		if(s==null || s.length() < 4)return result;
