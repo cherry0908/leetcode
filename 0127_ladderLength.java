@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class Main
 {
-    public int ladderLength1(String beginWord, String endWord, List<String> wordList) {
+    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
         if(beginWord == null || beginWord.length() == 0 || endWord == null || endWord.length() == 0 || beginWord.length() != endWord.length() || wordList == null | wordList.size() ==0) return 0;
         if(!wordList.contains(endWord)) return 0;
         HashSet<String> wordMap = new HashSet<String>(wordList);
@@ -37,7 +37,7 @@ public class Main
     }
 
 
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+    public int ladderLength2(String beginWord, String endWord, List<String> wordList) {
         if(beginWord == null || beginWord.length() == 0 || endWord == null || endWord.length() == 0 || beginWord.length() != endWord.length() || wordList == null | wordList.size() ==0) return 0;
         if(!wordList.contains(endWord)) return 0;
         HashSet<String> wordMap = new HashSet<String>(wordList);
