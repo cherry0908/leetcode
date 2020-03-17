@@ -11,6 +11,19 @@ class Solution {
         return result;
     }
 
+    public int maxSubArrayDP(int[] nums) {
+        if(nums==null||nums.length==0) return 0;
+        int n=nums.length;
+        int[] f=new int[n];
+        f[0]=nums[0];
+        int result=f[0];
+        for(int i=1;i<n;i++){
+            f[i]=Math.max(f[i-1]+nums[i],nums[i]);
+            result=Math.max(result,f[i]);
+        }
+        return result;
+    }
+
     public int maxSubArrayDividConquer(int[] nums){
 
     }
