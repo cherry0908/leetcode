@@ -11,75 +11,89 @@ The solution set must not contain duplicate triplets.
 import java.io.*; 
 import java.util.*;
 
-class Solution {
-    // public List<List<Integer>> threeSum(int[] nums) {
-    //     List<List<Integer>> list = new ArrayList<List<Integer>>();
-    //     if(nums == null || nums.length == 0) return list;
-    //     int n = nums.length;
-    //     Arrays.sort(nums);
-    //     for(int i = 0; i < n; i++){
-    //         int target = 0 - nums[i];
-    //         int start = i + 1, end = n - 1;
-    //         while(start < end){
-    //             if(nums[start] + nums[end] == target){
-    //                 List<Integer> triplets = new ArrayList<Integer>();
-    //                 triplets.add(nums[i]);
-    //                 triplets.add(nums[start]);
-    //                 triplets.add(nums[end]);
-    //                 System.out.println(triplets);
-    //                 list.add(triplets);
-    //                 start ++;
-    //                 end --;
-    //                 while(start < end && nums[start] == nums[start - 1]){
-    //                     start ++;
-    //                 }
-    //                 while(start < end && nums[end] == nums[end + 1]){
-    //                     end --;
-    //                 }
-    //             }
-    //             else if(nums[start] + nums[end] > target){
-    //                 end --;
-    //             }
-    //             else{
-    //                 start ++;
-    //             }
-    //         }
-    //         while(i < n - 1 && nums[i] == nums[i + 1]) {
-    //             i ++;
-    //         }
-    //     }
-    //     return list;
-    // }
+public class Solution {
+    public List<List<Integer>> threeSum1(int[] nums) {
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        int len = nums.length;
+        if(nums == null | len < 3) return result;
+        Arrays.sort(nums);
+        int ptrL, ptrR, sum;
+        for(int i = 0; i < len; i ++){
+            ptrL = i + 1;
+            ptrR = len - 1;
+            if(i > 0 && nums[i] == nums[i-1]){
+                continue;
+            }
+            while(ptrL < ptrR){
+                sum = nums[i] + nums[ptrL] + nums[ptrR];
+                if(sum == 0){
+                    List<Integer> triplet = new ArrayList<Integer>();
+                    triplet.add(nums[i]);
+                    triplet.add(nums[ptrL]);
+                    triplet.add(nums[ptrR]);
+                    result.add(triplet);
+                    ptrL++;
+                    ptrR--;
+                    while(ptrL < ptrR && nums[ptrL] == nums[ptrL - 1]){
+                        ptrL++;
+                    }
+                    while(ptrL < ptrR && nums[ptrR] == nums[ptrR + 1]){
+                        ptrR--;
+                    }
+                }
+                else if(sum < 0){
+                    ptrL++;
+                }
+                else{
+                    ptrR--;
+                }
+            }
+        }
+        return result;
+    }
     
     public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> list = new ArrayList<List<Integer>>();
-        if(nums == null || nums.length == 0) return list;
-        int n = nums.length;
-        //use hashset to avoid duplicates
+        List<List<Integer>> result = new ArrayList<List<Integer>>();
+        int len = nums.length;
+        if(nums == null | len < 3) return result;
         HashSet<Integer> set = new HashSet<Integer>();
-        HashSet<List<Integer>> result = new HashSet<List<Integer>>();
-        //use hashmap to find the target - nums1 - nums2
-        //hashmap usage is similar to two sum
-        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
-        for(int i = 0; i < n; i++){
-            //add, skip duplicate
-            //if true means not in the set yet
-            if(set.add(nums[i])){
-                //start from i + 1
-                for(int j = i + 1; j < n; j++){
-                    int rest = 0 - (nums[i] + nums[j]);
-                    //if rest is in the map && the number can be used in this loop
-                    if(map.containsKey(rest) && map.get(rest) == i){
-                        List<Integer> triplet = Arrays.asList(nums[i], nums[j], rest);
-                        Collections.sort(triplet);
-                        result.add(triplet);
+        HashSet<List<Integer>> triplets = new HashSet<List<Integer>>();
+        for(int j = 0; j < len; j++){
+            if(set.contains(nums[j])){
+                continue;
+            }
+            set.add(nums[j]);
+            HashMap<Integer, Integer> map = new HashMap<>();
+            for(int i = j + 1; i < len; i++){
+                if(!map.containsKey(nums[i])){
+                    map.put(nums[i], i);
+                }
+                int diff = 0 - nums[j] - nums[i];
+                if(map.containsKey(diff)){
+                    int index = map.get(diff);
+                    if(index == i){
+                        continue;
                     }
                     else{
-                        map.put(nums[j], i);
+                        List<Integer> triplet = new ArrayList<Integer>();
+                        triplet.add(nums[i]);
+                        triplet.add(nums[j]);
+                        triplet.add(nums[index]);
+                        Collections.sort(triplet);
+                        triplets.add(triplet);
                     }
                 }
             }
         }
-        return new ArrayList(result);
+        result = new ArrayList<>(triplets);
+        return result;
     }
+
+    public static void main(String[] args) {
+	    Solution s = new Solution();
+	    int[] nums = {-2, 0, 0, 2, 2};
+	    List<List<Integer>> r = s.threeSum(nums);
+        System.out.println(r);
+	}
+
 }
