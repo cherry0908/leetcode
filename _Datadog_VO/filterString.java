@@ -1,11 +1,13 @@
 import java.io.*; 
 import java.util.*; 
 
-class Solution {
+public class Solution {
     
-    public String[] stringFilter(String[] filter, String[][] input) {
-        if (input == null || input.length == 0) {
-            return new String[]{};
+    public List<String> stringFilter(List<String> filter, List<List<String>> input) {
+        List<String> res = new ArrayList<>();
+        
+        if (input == null || input.size() == 0) {
+            return res;
         }
         
         // create a hashset for the keywords in the filter
@@ -17,7 +19,21 @@ class Solution {
         HashSet<String> complement = new HashSet<>();
         
         // for each array in the stream, check if it contains all the keywords in the filter
-        for (String[] array : input) {
+        for (List<String> array : input) {
+            
+            HashSet<String> input_set = new HashSet<>();
+            
+            for (String s : array) {
+                input_set.add(s);
+            }
+            
+            if (input_set.containsAll(keywords)) {
+                input_set.removeAll(keywords);
+                complement.addAll(input_set);
+            }
+            
+            /*
+            
             // the number of keywords in the filter needs to match
             int count = keywords.size();
             
@@ -43,8 +59,11 @@ class Solution {
             }
             
             // if we cannot get everything matched in the keywords set, skip
+            */
+            
         }
         
+        /*
         // convert hashset to array
         int size = complement.size();
         String[] result = new String[size];
@@ -54,8 +73,13 @@ class Solution {
             result[i] = s;
             i++;
         }
+        */
         
-        return result;
+        for (String s : complement) {
+            res.add(s);
+        }
+        
+        return res;
     }
     
     public String print2DArray(String[][] input) {
@@ -94,11 +118,7 @@ class Solution {
         return sb.toString();
     }
     
-}
-
-public class Main
-{
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         Solution s = new Solution();
 
         // List<List<String>> input = new ArrayList<>(); 
@@ -111,8 +131,16 @@ public class Main
         System.out.println("filter words: " + s.printArray(filter));
         System.out.println("input stream: " + s.print2DArray(stream));
         
-        String[] output = s.stringFilter(filter, stream);
+        List<List<String>> input = new ArrayList<>();
+        for (String[] str : stream) {
+            input.add(Arrays.asList(str));
+        }
+        
+        List<String> set = List.of(filter);
+        
+        List<String> res = s.stringFilter(set, input);
 
-        System.out.println("output result: " + s.printArray(output));
+        System.out.println("output result: " + res);
 	}
+    
 }
